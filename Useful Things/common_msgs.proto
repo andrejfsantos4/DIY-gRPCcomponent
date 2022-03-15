@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+// Bellow are some common message types. The script parsing.py contains methods for converting messages to and from the
+// corresponding python data structures (example: from a 2D numpy array to a message of type Float2DArray)
+
+// Message for 1D arrays of floats
+message Float1DArray {
+  repeated float elems = 1;
+}
+
+// Message for 2D arrays of floats
+message Float2DArray {
+  repeated Float1DArray lines = 1;
+}
+
+// Message for 3D arrays of floats
+message Float3DArray {
+  repeated Float2DArray matrices = 1;
+}
+
+// Message for color and B&W images
+message Image {
+  Float3DArray img = 1;
+  int32 width = 2; // this field is (optional)
+  int32 height = 3; // this field is (optional)
+}
+
+// Alternatively, an image can be sent as a sequence of bytes
+message Image_bytes {
+    bytes data = 1;
+}

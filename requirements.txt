@@ -1,0 +1,7 @@
+// These are mandatory requirements
+grpcio
+grpcio-reflection
+protobuf
+// There are your requirements
+numpy
+...

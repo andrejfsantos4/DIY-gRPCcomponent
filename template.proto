@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+// An example of declaring a gRPC service.
+service ExampleService {
+  // Definition of service method name and it's input and output message type
+  rpc YourMethodName(InputMessage) returns (OutputMessage) {}
+}
+
+// Input message type. This is what your service will receive.
+message InputMessage {
+  int32 some_number = 1;
+}
+
+// Output message type. This is what your service must output.
+message OutputMessage {
+  bool what_is_true = 1;
+}
