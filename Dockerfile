@@ -1,10 +1,14 @@
-# Define workdir folder for all stages
+# This Dockerfile template most likely contains everything you'll need. The changes you need to make (mostly adjusting
+# file names) are labelled with a TODO.
+
+# Define work directory folder inside the docker container for all stages
 # Must be renewed in the beggining of each stage
 ARG WORKSPACE=/workspace
 
 # --------------------------------------
-# Builder stage to generate .proto files.
+# Builder stage to generate .proto files
 # This prevents having to install protobuf and gRPC on the final docker image
+# Only one change is necessary here
 # --------------------------------------
 
 FROM python:3.8.7-slim-buster as builder
@@ -20,14 +24,16 @@ RUN pip install --upgrade pip && \
 COPY ${PROTOS_FOLDER_DIR} ${WORKSPACE}/
 WORKDIR ${WORKSPACE}
 
-# Compile proto file and remove it since it will no longer be necessary
-RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. traffic_routing.proto
+# Compile proto file and remove it since it will no longer be necessary TODO: adjust the filename
+RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. your_proto.proto
 
 
 # -----------------------------
-# Stage to generate final image
+# Stage to generate final image. This will generate your final docker image
 # -----------------------------
 
+# TODO: You may need to change the starting Docker image to fit your needs (eg, if you need PyTorch, then you should start
+# from an image that already has it)
 FROM python:3.8.7-slim-buster
 # Renew build args
 ARG WORKSPACE
@@ -45,21 +51,21 @@ RUN addgroup --system ${GROUP} && \
 COPY requirements.txt .
 
 RUN pip install --upgrade pip && \
-    # Install headless version of opencv-python for server usage
-    # Does not install graphical modules
-    # See https://github.com/opencv/opencv-python#installation-and-usage
     pip install -r requirements.txt && \
     rm requirements.txt
 
-# COPY .proto file to root to meet ai4eu specifications
-COPY --from=builder --chown=${USER}:${GROUP} ${WORKSPACE}/traffic_routing.proto /
+# COPY .proto file to root to meet ai4eu specifications TODO: adjust the filename
+COPY --from=builder --chown=${USER}:${GROUP} ${WORKSPACE}/your_proto.proto /
 
 # Copy generated .py files to workspace
 COPY --from=builder --chown=${USER}:${GROUP} ${WORKSPACE}/*.py ${WORKSPACE}/
 
-# Copy files to workspace
+# Copy necessary files to workspace TODO: adjust the filenames
+COPY --chown=${USER}:${GROUP} you_server.py ${WORKSPACE}/your_server.py
+# TODO: Add copies of this line for each file you need.
+# The syntax is COPY --chown=${USER}:${GROUP} file_name_in_your_machine.py ${WORKSPACE}/file_name_in_docker.py
+# For instance, if you use parsing.py:
 COPY --chown=${USER}:${GROUP} parsing.py ${WORKSPACE}/parsing.py
-COPY --chown=${USER}:${GROUP} traffic_routing_server.py ${WORKSPACE}/traffic_routing_server.py
 
 # Change to non-privileged user
 USER ${USER}
@@ -69,4 +75,5 @@ EXPOSE 8061
 
 WORKDIR ${WORKSPACE}
 
-CMD ["python", "traffic_routing_server.py"]
+# This command will be executed when launching your Docker container TODO: adjust the filename
+CMD ["python", "your_server.py"]

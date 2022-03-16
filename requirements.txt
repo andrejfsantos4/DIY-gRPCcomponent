@@ -3,5 +3,8 @@ grpcio
 grpcio-reflection
 protobuf
 // There are your requirements
-numpy
+opencv-python-headless
+    // Install headless version of opencv-python for server usage
+    // Does not install graphical modules
+    // See https://github.com/opencv/opencv-python#installation-and-usage
 ...
