@@ -34,10 +34,7 @@ You'll need to have installed:
 
 ### Defining the service interface
 The first task is to think of what your service needs to receive as input and what it produces as output. You'll then 
-need to define these inputs and outputs in a .proto file. See the file [template.proto](template.proto) for some 
-examples of messages for common data structures such as arrays. When defining this interface it is very important to also consider what the other users of your service will need from 
-it. For instance, if your service detects the pose of a hand from an image, then it could output not only the actual 
-hand pose but also the image with the pose overlayed on top of it, for visualization purposes.
+need to define these inputs and outputs in a .proto file. See the file [template.proto](template.proto) for a simple example of what your .proto will look like, and [common_msgs.proto](Useful%20Things/common_msgs.proto) for some examples of messages for common data structures such as arrays. When defining this interface it is very important to also consider what the other users of your service will need from it. For instance, if your service detects the pose of a hand from an image, then it could output not only the actual hand pose but also the image with the pose overlayed on top of it, for visualization purposes.
 
 Note that you can also define multiple services with just one proto file. To achieve this you'd need to define one 
 service with multiple methods. Later you can specify which method to execute in the definition of the pipeline.
