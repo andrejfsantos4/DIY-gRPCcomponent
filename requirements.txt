@@ -2,7 +2,7 @@
 grpcio
 grpcio-reflection
 protobuf
-// There are your requirements
+// These are your requirements
 opencv-python-headless
     // Install headless version of opencv-python for server usage
     // Does not install graphical modules
