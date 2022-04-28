@@ -1,7 +1,10 @@
+# NOTE: Throughout the file the places where you need to make changes are labeled with a TODO.
+
 # Mandatory imports
 from concurrent import futures
 import grpc
 import grpc_reflection.v1alpha.reflection as grpc_reflection
+# TODO: change the files names (make sure to change these names in the entire file, not just in these two lines)
 import your_service_name_pb2
 import your_service_name_pb2_grpc
 
@@ -11,9 +14,11 @@ import logging  # For printing information about execution (warnings, errors, et
                 # https://docs.python.org/3/howto/logging.html for more info on this
 
 
-class YourServicer(your_service_name_pb2_grpc.YourServicer):
+  # TODO: Choose a name for your server class and replace "YourServerClassName". Also replace "YourServicer" with the correct class name
+class YourServerClassName(your_service_name_pb2_grpc.YourServicer):
     """Provides methods that implement functionality of your server."""
 
+    # TODO: Replace "YourMethodName" with the method name you defined in your proto
     def YourMethodName(self, request, context):
         """
         Implement your component funcionality here.
@@ -34,12 +39,13 @@ class YourServicer(your_service_name_pb2_grpc.YourServicer):
 # The following code is required. Most likely you'll only need to change the service name to match your service name
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor())
+    # TODO: Change "YourServicer" in the method name to the correct name. Also change "YourServerClassName" to the class name you choose earlier
     your_service_name_pb2_grpc.add_YourServicer_to_server(
-        YourServicer(), server)
+        YourServerClassName(), server)
 
     # Add reflection. Is required so that the pipeline orchestrator knows what method to invoke
     service_names = (
-        your_service_name_pb2.DESCRIPTOR.services_by_name['YourServiceName'].full_name,
+        your_service_name_pb2.DESCRIPTOR.services_by_name['YourServiceName'].full_name,  # TODO: change "YourServiceName"
         grpc_reflection.SERVICE_NAME
     )
     grpc_reflection.enable_server_reflection(service_names, server)
